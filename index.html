@@ -244,6 +244,10 @@
         </div>
     </footer>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const animatedElements = document.querySelectorAll('.fade-in');
@@ -257,12 +261,49 @@
             }, { threshold: 0.1 });
             animatedElements.forEach(el => observer.observe(el));
 
+            // --- Firebase Waitlist Form ---
+            // TODO: Replace with your Firebase project configuration
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_AUTH_DOMAIN",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_STORAGE_BUCKET",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
             const waitlistForm = document.getElementById('waitlist-form');
+            const successMsg = document.getElementById('waitlist-success');
+
             waitlistForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                const successMsg = document.getElementById('waitlist-success');
-                waitlistForm.style.display = 'none';
-                successMsg.classList.remove('hidden');
+
+                const email = document.getElementById('email').value;
+                const role = document.getElementById('role').value;
+                const submitBtn = document.getElementById('waitlist-submit-btn');
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Enviando...';
+
+                db.collection('waitlist').add({
+                    email: email,
+                    role: role,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then(() => {
+                    waitlistForm.style.display = 'none';
+                    successMsg.classList.remove('hidden');
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                    alert('Hubo un error al registrarte. Por favor, intentá de nuevo.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Unirme a la lista';
+                });
             });
         });
     </script>
