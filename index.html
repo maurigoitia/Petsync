@@ -1,167 +1,141 @@
-import React from 'react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PetSync — Turnos e Historial. Una patita a la vez.</title>
+  <meta name="description" content="PetSync conecta a tutores de mascotas y veterinarias para simplificar turnos, historiales y recordatorios. Una patita a la vez." />
+  <link rel="icon" href="/favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --brand: #2563eb; }
+    html { scroll-behavior: smooth; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  </style>
+</head>
 
-export default function PetSyncLanding() {
-  return (
-    <div className="font-sans text-gray-800 bg-gray-50">
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="#" className="text-2xl font-bold text-blue-600">🐾 PetSync</a>
-          <a href="#contacto" className="font-semibold text-blue-600 border-2 border-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition">Contáctanos</a>
-        </div>
-      </header>
-
-      <main>
-        <section className="bg-white text-center py-20">
-          <div className="container mx-auto px-4">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4 leading-snug">
-              PetSync — Turnos e Historial. Una patita a la vez.
-            </h1>
-            <p className="text-lg text-gray-500 mb-8 max-w-xl mx-auto">
-              Conectá con tu veterinaria para turnos e historial automático, o escaneá y organizá todo vos mismo. Una patita a la vez.
-            </p>
-            <form id="waitlist-form-anchor" action="TU_URL_DE_FORMULARIO_AQUI" method="POST" className="flex flex-col sm:flex-row justify-center items-center gap-3 max-w-md mx-auto">
-              <input type="email" name="email" placeholder="Tu correo electrónico" required className="w-full sm:flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              <button type="submit" className="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition w-full sm:w-auto">
-                ¡Unirme a la espera!
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-semibold text-center mb-12 text-gray-800">
-              La visión completa de PetSync
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-2xl shadow-md p-8 text-center hover:shadow-lg transition">
-                <div className="text-5xl mb-4">🩺</div>
-                <h3 className="text-xl font-semibold mb-2">Historial Centralizado</h3>
-                <p className="text-gray-600 text-sm">
-                  Arma el historial escaneando papeles (OCR) o recíbelo directo desde tu veterinaria asociada.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-md p-8 text-center hover:shadow-lg transition">
-                <div className="text-5xl mb-4">📅</div>
-                <h3 className="text-xl font-semibold mb-2">Turnos Online</h3>
-                <p className="text-gray-600 text-sm">
-                  Reserva, modifica y gestiona todos los turnos de tu mascota con las veterinarias de la red.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-2xl shadow-md p-8 text-center hover:shadow-lg transition">
-                <div className="text-5xl mb-4">🔔</div>
-                <h3 className="text-xl font-semibold mb-2">Recordatorios en la App</h3>
-                <p className="text-gray-600 text-sm">
-                  Recibe notificaciones dentro de la app sobre citas, medicamentos y próximos vencimientos.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Beneficios para Tutores</h2>
-            <p className="text-center text-gray-600 mb-8">Todo lo que necesitás para el cuidado de tu mascota, al alcance de tu mano y conectado con tu veterinaria.</p>
-            <ul className="list-disc list-inside space-y-3 text-gray-700 max-w-2xl mx-auto">
-              <li>Accedé a la información médica de tu mascota, sus paseos, recomendaciones, próximas visitas y recordatorios de medicación. Una patita a la vez.</li>
-              <li>Agenda Inteligente, Cero Estrés — Organizá turnos, vacunas y desparasitaciones sin esfuerzo.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="bg-gray-50 py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Beneficios para Veterinarias</h2>
-            <ul className="list-disc list-inside space-y-3 text-gray-700 max-w-2xl mx-auto">
-              <li>Optimizá tu Tiempo — Gestioná tu agenda de forma eficiente y reducí la carga administrativa.</li>
-              <li>Conexión Directa — Fortalecé la relación con tus clientes centralizando la información.</li>
-              <li>Ampliá tu Comunidad — Unite a una red creciente de tutores y profesionales.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="bg-white py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-semibold mb-6 text-gray-800">¿Cómo Funciona PetSync?</h2>
-            <p className="text-gray-600 mb-4"><strong>Para Tutores:</strong> Descargá la app, creá un perfil para tu mascota, conectate con tu veterinaria y gestioná tus citas fácilmente.</p>
-            <p className="text-gray-600"><strong>Para Veterinarias:</strong> Registrate, creá el perfil de tu clínica, invitá a tus pacientes e integrá tus turnos.</p>
-          </div>
-        </section>
-
-        <section className="bg-gray-50 py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-semibold mb-6 text-gray-800">Quiénes Somos</h2>
-            <p className="text-gray-600 mb-4">🐾 En PetSync desarrollamos una plataforma móvil para tutores y clínicas veterinarias, convencidos de que el cuidado de las mascotas puede ser más simple y eficiente para todos.</p>
-            <p className="text-gray-600">Conectamos ambos lados del mostrador, una patita a la vez.</p>
-            <p className="text-gray-500 mt-4">¡Estamos en versión beta! Sumate a la waitlist para ser de los primeros en probar PetSync.</p>
-          </div>
-        </section>
-        <section className="bg-white py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-semibold text-center mb-8 text-gray-800">Preguntas Frecuentes</h2>
-            <div className="max-w-2xl mx-auto space-y-4">
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">¿Qué es PetSync y cómo puede ayudarme?</summary>
-                <p className="text-gray-700 mt-2">PetSync es una plataforma móvil que conecta a tutores de mascotas con clínicas veterinarias. Simplifica la gestión del cuidado de tu mascota permitiéndote agendar turnos, acceder a historiales médicos centralizados, recibir recordatorios y más, todo desde tu celular. Para las veterinarias, optimiza la agenda, reduce la carga administrativa y mejora la comunicación con los clientes.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">¿Cómo me registro en PetSync?</summary>
-                <p className="text-gray-700 mt-2">Estamos en versión beta. Dejanos tu contacto en nuestra waitlist (en esta página) y te avisamos tan pronto como puedas registrarte para ser de los primeros en probar PetSync.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">¿PetSync tiene costo para los tutores de mascotas?</summary>
-                <p className="text-gray-700 mt-2">Nuestro objetivo es que la versión básica para tutores sea gratuita, con funcionalidades esenciales. Más adelante podrían existir funciones premium opcionales.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">Soy veterinario independiente, ¿PetSync me sirve?</summary>
-                <p className="text-gray-700 mt-2">Sí. PetSync se adapta tanto a clínicas con varios profesionales como a veterinarios independientes. Te ayuda a organizar la agenda, mantener historiales digitalizados y comunicarte eficientemente con los tutores.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">Soy una clínica grande, ¿cómo se integra PetSync con lo que ya tengo?</summary>
-                <p className="text-gray-700 mt-2">Somos agnósticos de software y buscamos complementar tus herramientas actuales. Ofrecemos <strong>migración guiada</strong> para transferir tu información y acompañamos la puesta en marcha para que el cambio sea simple.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">¿Está segura la información de mi mascota en PetSync?</summary>
-                <p className="text-gray-700 mt-2">La seguridad es prioridad. Usamos cifrado y buenas prácticas para proteger la información. Solo vos y las personas que autorices (como tu veterinario) podrán acceder a los datos.</p>
-              </details>
-
-              <details className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <summary className="font-semibold text-gray-800 cursor-pointer">¿Cómo puedo contactar a PetSync si tengo más preguntas?</summary>
-                <p className="text-gray-700 mt-2">Escribinos a <a href="mailto:thor@petsync.net" className="text-blue-600 underline">thor@petsync.net</a> o seguinos en <a href="https://www.linkedin.com/company/petsync-app" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">LinkedIn</a> para novedades y soporte.</p>
-              </details>
-            </div>
-          </div>
-        </section>
-
-        <section id="contacto" className="bg-white py-16">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-semibold mb-6">Contáctanos</h2>
-            <p className="text-gray-600">Si querés más información o querés hablar con el equipo, escribinos a <a href="mailto:thor@petsync.net" className="text-blue-600 underline">thor@petsync.net</a>.</p>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-gray-200 py-8 text-center text-sm text-gray-500">
-        <div className="mb-2 font-medium">PetSync — Tu mascota, sus cosas, todo en orden.</div>
-        <div className="space-x-4 mb-2">
-          <a href="#" className="text-blue-600 hover:underline">Términos y condiciones</a>
-          <a href="#" className="text-blue-600 hover:underline">Política de Privacidad</a>
-          <a href="mailto:thor@petsync.net" className="text-blue-600 hover:underline">Contacto</a>
-        </div>
-        <div className="space-x-3">
-          <a href="https://www.linkedin.com/company/petsync-app" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">LinkedIn</a>
-        </div>
-        <p className="text-gray-400 mt-4">© 2025 PetSync. Todos los derechos reservados.</p>
-      </footer>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <div class="max-w-6xl mx-auto flex justify-between items-center px-4 py-4">
+      <a href="#" class="text-2xl font-bold text-blue-600">🐾 PetSync</a>
+      <a href="#contacto" class="font-semibold text-blue-600 border-2 border-blue-600 rounded-full px-4 py-1.5 hover:bg-blue-600 hover:text-white transition">Contáctanos</a>
     </div>
-  );
-}
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-white text-center py-20">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-snug">PetSync — Turnos e Historial. Una patita a la vez.</h1>
+      <p class="text-lg text-gray-600 mb-8">Conectá con tu veterinaria para turnos e historial automático, o escaneá y organizá todo vos mismo. Una patita a la vez.</p>
+      <form id="waitlist" class="flex flex-col sm:flex-row justify-center items-center gap-3 max-w-md mx-auto">
+        <input type="email" placeholder="Tu correo electrónico" required class="w-full sm:flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+        <button type="submit" class="bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition w-full sm:w-auto">¡Unirme a la espera!</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Visión -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-semibold mb-12 text-gray-800">La visión completa de PetSync</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+          <div class="text-5xl mb-4">🩺</div>
+          <h3 class="text-xl font-semibold mb-2">Historial Centralizado</h3>
+          <p class="text-gray-600 text-sm">Escaneá tus papeles o recibí el historial directamente desde tu veterinaria asociada.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+          <div class="text-5xl mb-4">📅</div>
+          <h3 class="text-xl font-semibold mb-2">Turnos Online</h3>
+          <p class="text-gray-600 text-sm">Reservá, modificá y gestioná los turnos de tu mascota en un solo lugar.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition">
+          <div class="text-5xl mb-4">🔔</div>
+          <h3 class="text-xl font-semibold mb-2">Recordatorios en la App</h3>
+          <p class="text-gray-600 text-sm">Recibí alertas sobre citas, medicación y próximas vacunas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tutores -->
+  <section class="bg-white py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold text-center mb-8">Beneficios para Tutores</h2>
+      <p class="text-center text-gray-600 mb-8">Todo lo que necesitás para el cuidado de tu mascota, al alcance de tu mano.</p>
+      <ul class="list-disc list-inside space-y-3 text-gray-700 max-w-2xl mx-auto">
+        <li>Accedé a la información médica de tu mascota, sus paseos, recomendaciones, próximas visitas y recordatorios. Una patita a la vez.</li>
+        <li>Agenda Inteligente, Cero Estrés — Organizá turnos, vacunas y desparasitaciones sin esfuerzo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Veterinarias -->
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold text-center mb-8">Beneficios para Veterinarias</h2>
+      <ul class="list-disc list-inside space-y-3 text-gray-700 max-w-2xl mx-auto">
+        <li>Optimizá tu tiempo — gestioná tu agenda de forma eficiente y reducí la carga administrativa.</li>
+        <li>Conexión Directa — fortalecé la relación con tus clientes centralizando la información.</li>
+        <li>Ampliá tu comunidad — unite a una red creciente de tutores y profesionales.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Cómo Funciona -->
+  <section class="bg-white py-16">
+    <div class="max-w-5xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-semibold mb-6">¿Cómo Funciona PetSync?</h2>
+      <p class="text-gray-600 mb-4"><strong>Para Tutores:</strong> Creá un perfil para tu mascota, conectate con tu veterinaria y gestioná tus citas fácilmente.</p>
+      <p class="text-gray-600"><strong>Para Veterinarias:</strong> Registrá tu clínica, invitá a pacientes y empezá a sincronizar historiales.</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold text-center mb-8">Preguntas Frecuentes</h2>
+      <div class="space-y-4">
+        <details class="bg-white rounded-lg p-4 border border-gray-200">
+          <summary class="font-semibold text-gray-800 cursor-pointer">¿Qué es PetSync y cómo puede ayudarme?</summary>
+          <p class="text-gray-700 mt-2">PetSync conecta tutores y clínicas para centralizar historiales, turnos y recordatorios.</p>
+        </details>
+        <details class="bg-white rounded-lg p-4 border border-gray-200">
+          <summary class="font-semibold text-gray-800 cursor-pointer">¿Cómo me registro?</summary>
+          <p class="text-gray-700 mt-2">Dejanos tu correo en la waitlist de esta página. Te avisamos en cuanto abramos el registro.</p>
+        </details>
+        <details class="bg-white rounded-lg p-4 border border-gray-200">
+          <summary class="font-semibold text-gray-800 cursor-pointer">¿PetSync tiene costo?</summary>
+          <p class="text-gray-700 mt-2">La app básica será gratuita para tutores. Podrían agregarse funciones premium en el futuro.</p>
+        </details>
+        <details class="bg-white rounded-lg p-4 border border-gray-200">
+          <summary class="font-semibold text-gray-800 cursor-pointer">¿Cómo puedo contactar a PetSync?</summary>
+          <p class="text-gray-700 mt-2">Escribinos a <a href="mailto:thor@petsync.net" class="text-blue-600 underline">thor@petsync.net</a> o seguinos en <a href="https://www.linkedin.com/company/petsync-app" target="_blank" class="text-blue-600 underline">LinkedIn</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="bg-white py-16 text-center">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold mb-6">Contáctanos</h2>
+      <p class="text-gray-600">Si querés más información, escribinos a <a href="mailto:thor@petsync.net" class="text-blue-600 underline">thor@petsync.net</a>.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 py-8 text-center text-sm text-gray-500">
+    <p class="font-medium mb-2">PetSync — Tu mascota, sus cosas, todo en orden.</p>
+    <div class="space-x-4 mb-2">
+      <a href="#" class="text-blue-600 hover:underline">Términos</a>
+      <a href="#" class="text-blue-600 hover:underline">Privacidad</a>
+      <a href="mailto:thor@petsync.net" class="text-blue-600 hover:underline">Contacto</a>
+    </div>
+    <a href="https://www.linkedin.com/company/petsync-app" target="_blank" class="text-blue-600 hover:underline">LinkedIn</a>
+    <p class="text-gray-400 mt-4">© 2025 PetSync. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>
 
