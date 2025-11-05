@@ -9,11 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #5A48E3; /* Morado Principal */
-            --secondary-color: #4ECDC4; /* Turquesa Secundario */
-            --dark-text: #1f2937;
-            --light-text: #f9fafb;
-            --body-bg: #fdfdfd;
+            --primary-color: #007bff; /* Azul PetSync */
+            --dark-text: #212529;
+            --light-text: #f8f9fa;
+            --body-bg: #ffffff;
         }
         body {
             box-sizing: border-box;
@@ -23,140 +22,130 @@
         }
         .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.39, 0.575, 0.565, 1); }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .slide-in-left { opacity: 0; transform: translateX(-40px); transition: all 0.6s cubic-bezier(0.39, 0.575, 0.565, 1); }
-        .slide-in-left.visible { opacity: 1; transform: translateX(0); }
-        .slide-in-right { opacity: 0; transform: translateX(40px); transition: all 0.6s cubic-bezier(0.39, 0.575, 0.565, 1); }
-        .slide-in-right.visible { opacity: 1; transform: translateX(0); }
         
-        .pulse-gentle { animation: pulseGentle 3s infinite; }
-        @keyframes pulseGentle {
-            0%, 100% { transform: scale(1); box-shadow: 0 10px 20px rgba(90, 72, 227, 0.15); }
-            50% { transform: scale(1.03); box-shadow: 0 15px 30px rgba(90, 72, 227, 0.2); }
+        .btn-header {
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-size: 14px;
         }
-        .bounce-hover:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-        .tilt-hover:hover { transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1.05); }
-
-        .paw-pattern {
-            background-image:
-                radial-gradient(circle at 20% 80%, rgba(90, 72, 227, 0.04) 2px, transparent 2px),
-                radial-gradient(circle at 80% 20%, rgba(90, 72, 227, 0.04) 2px, transparent 2px),
-                radial-gradient(circle at 40% 40%, rgba(78, 205, 196, 0.04) 2px, transparent 2px);
-            background-size: 100px 100px, 120px 120px, 80px 80px;
-        }
-        .gradient-hero { background: linear-gradient(180deg, var(--body-bg) 70%, #f7f5ff 100%); }
-
-        .phone-mockup {
-            border: 8px solid #e5e7eb;
-            border-radius: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            transition: all 0.3s ease;
-        }
-        .app-screen {
-            background: linear-gradient(145deg, var(--primary-color), #7C6FF1);
-            border-radius: 32px;
-            overflow: hidden;
+        .btn-header:hover {
+            background-color: var(--primary-color);
+            color: #fff;
         }
 
-        .success-message { transition: all 0.3s ease; }
-        .success-message.show { opacity: 1; transform: translateY(0); }
+        .waitlist-form input[type="email"] {
+            flex-grow: 1;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .waitlist-form input[type="email"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
 
-        .loading-spinner {
-            border: 2px solid transparent;
-            border-top: 2px solid var(--light-text);
-            border-right: 2px solid var(--light-text);
-            animation: spin 1s linear infinite;
+        .waitlist-form button {
+            padding: 14px 22px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .waitlist-form button:hover {
+            background-color: #0056b3;
         }
-        .floating { animation: floating 5s ease-in-out infinite; }
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+
+        .feature-item {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
 
         .faq-item dt::-webkit-details-marker { display: none; }
         .faq-item dt { user-select: none; }
         .faq-item dt .chevron { transition: transform 0.2s ease-out; }
         .faq-item[open] dt .chevron { transform: rotate(90deg); }
-        .faq-item dd { transition: all 0.2s ease-out; }
+
     </style>
 </head>
 
 <body class="h-full">
-    <header class="bg-white/80 backdrop-blur-lg border-b border-gray-100 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
-                <a href="#" class="flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
-                    <span class="text-3xl">🐾</span>
-                    <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-700">PetSync</span>
+                <a href="#" class="flex items-center gap-2 text-2xl font-bold text-blue-600">
+                    🐾 PetSync
                 </a>
-                <div class="flex items-center space-x-2 sm:space-x-6">
-                    <a href="#vet-section" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-md px-2 py-1">
-                        Para Veterinarias
-                    </a>
-                    <a href="#faq-section" class="bg-indigo-600 text-white px-5 py-2.5 rounded-full hover:bg-indigo-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
-                        Contáctanos
-                    </a>
-                </div>
+                <a href="#waitlist-form-anchor" class="btn-header">
+                    Soy Veterinario
+                </a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="gradient-hero paw-pattern py-24 lg:py-32">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid lg:grid-cols-2 gap-16 items-center">
-                    <div class="text-center lg:text-left">
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 fade-in leading-tight">La salud de tu mascota, simplificada.</h1>
-                        <p class="text-lg text-gray-600 mb-8 fade-in leading-relaxed">Turnos, recordatorios y toda la historia clínica en un solo lugar. PetSync es la app que te conecta con tu veterinaria de confianza.</p>
-                        <div class="fade-in">
-                            <form id="hero-form" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto lg:mx-0">
-                                <label for="hero-email" class="sr-only">Tu correo electrónico</label>
-                                <input type="email" id="hero-email" placeholder="tu@email.com" class="flex-1 px-6 py-4 border border-gray-300 rounded-full focus:ring-2 focus:ring-indigo-500 focus:border-transparent shadow-sm transition" required>
-                                <button type="submit" id="hero-cta-btn" class="bg-indigo-600 text-white px-8 py-4 rounded-full hover:bg-indigo-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl pulse-gentle focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 flex items-center justify-center gap-2">
-                                    <span class="loading-spinner w-5 h-5 rounded-full" style="display: none;"></span>
-                                    Unirme a la espera
-                                </button>
-                            </form>
-                            <div id="hero-success" class="success-message mt-4 text-center lg:text-left text-indigo-700 font-medium opacity-0 transform -translate-y-2" style="display: none;">
-                                ¡Gracias! Te avisaremos cuando esté listo 🐾
-                            </div>
-                        </div>
+        <section class="bg-white py-20 lg:py-28 text-center">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-5 leading-tight">Turnos e historial, en un solo lugar.</h1>
+                <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">Conecta con tu veterinaria para turnos e historial automático, o escanea y organiza todo vos mismo. Una patita a la vez.</p>
+                <form class="waitlist-form flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="waitlist-form-anchor">
+                    <input type="email" placeholder="Tu correo electrónico" class="w-full" required>
+                    <button type="submit" class="w-full sm:w-auto">¡Unirme a la espera!</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="bg-gray-50 py-20 lg:py-24">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12">La visión completa de PetSync</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="feature-item">
+                        <div class="text-5xl mb-4">🩺</div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Historial Centralizado</h3>
+                        <p class="text-gray-600">Arma el historial escaneando papeles (OCR) o recíbelo directo desde tu veterinaria asociada.</p>
                     </div>
-                    <div class="text-center fade-in">
-                        <div class="phone-mockup w-80 h-[450px] mx-auto tilt-hover floating" aria-hidden="true">
-                            <div class="app-screen w-full h-full p-6 text-white">
-                                <div class="text-center mb-6">
-                                    <div class="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center"><span class="text-3xl">🐶</span></div>
-                                    <h3 class="font-bold text-xl">Max</h3>
-                                    <p class="text-indigo-100 text-sm">Golden Retriever • 3 años</p>
-                                </div>
-                                <div class="space-y-3">
-                                    <div class="bg-white/10 rounded-xl p-3"><div class="flex items-center justify-between"><span class="text-sm font-medium">Próxima vacuna</span><span class="text-xs bg-white/20 px-2 py-1 rounded-full font-semibold">15 días</span></div></div>
-                                    <div class="bg-white/10 rounded-xl p-3"><div class="flex items-center justify-between"><span class="text-sm font-medium">Control veterinario</span><span class="text-xs bg-white/20 px-2 py-1 rounded-full font-semibold">Mañana</span></div></div>
-                                    <div class="bg-white/10 rounded-xl p-3"><div class="flex items-center justify-between"><span class="text-sm font-medium">Medicación</span><span class="text-xs bg-teal-300 px-2 py-1 rounded-full font-semibold text-teal-900">Hoy</span></div></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="feature-item">
+                        <div class="text-5xl mb-4">📅</div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Turnos Online</h3>
+                        <p class="text-gray-600">Reserva, modifica y gestiona todos los turnos de tu mascota con las veterinarias de la red.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="text-5xl mb-4">🔔</div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Recordatorios en la App</h3>
+                        <p class="text-gray-600">Recibe notificaciones *dentro de la app* sobre citas, medicamentos y próximos vencimientos.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FAQ Section -->
         <section id="faq-section" class="bg-white py-20">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12 fade-in">Preguntas Frecuentes</h2>
-                <div class="space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12">Preguntas Frecuentes</h2>
+                <div class="space-y-4 max-w-2xl mx-auto">
                     <details class="faq-item bg-gray-50 p-4 rounded-lg group" open>
                         <summary class="list-none">
                             <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
                                 ¿Qué es PetSync y cómo puede ayudarme?
-                                <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                </span>
+                                <span class="chevron text-blue-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></span>
                             </dt>
                         </summary>
                         <dd class="mt-2 text-gray-600">
@@ -165,67 +154,13 @@
                     </details>
                     <details class="faq-item bg-gray-50 p-4 rounded-lg group">
                         <summary class="list-none">
-                          <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
-                            ¿Cómo me registro en PetSync?
-                            <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                          </dt>
+                            <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
+                                ¿Cómo me registro en PetSync?
+                                <span class="chevron text-blue-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></span>
+                            </dt>
                         </summary>
                         <dd class="mt-2 text-gray-600">
-                            Actualmente estamos en versión beta. Dejanos tu contacto en nuestra waitlist (arriba en esta página) y te avisaremos tan pronto puedas registrarte.
-                        </dd>
-                    </details>
-                     <details class="faq-item bg-gray-50 p-4 rounded-lg group">
-                        <summary class="list-none">
-                          <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
-                            ¿PetSync tiene costo para los tutores de mascotas?
-                            <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                          </dt>
-                        </summary>
-                        <dd class="mt-2 text-gray-600">
-                           La versión básica será gratuita e incluirá todas las funcionalidades esenciales. Más adelante podrían existir funciones premium opcionales.
-                        </dd>
-                    </details>
-                     <details class="faq-item bg-gray-50 p-4 rounded-lg group">
-                        <summary class="list-none">
-                          <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
-                           ¿Soy veterinario independiente, PetSync me sirve?
-                            <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                          </dt>
-                        </summary>
-                        <dd class="mt-2 text-gray-600">
-                           Sí. PetSync se adapta tanto a clínicas con varios profesionales como a veterinarios individuales. Podés organizar tu agenda, mantener historiales digitalizados y comunicarte fácilmente con tutores.
-                        </dd>
-                    </details>
-                    <details class="faq-item bg-gray-50 p-4 rounded-lg group">
-                        <summary class="list-none">
-                          <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
-                           ¿Soy una clínica grande, cómo se integra PetSync con mi sistema actual?
-                            <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                          </dt>
-                        </summary>
-                        <dd class="mt-2 text-gray-600">
-                           PetSync es una plataforma agnóstica que puede complementarse con sistemas existentes. Permitirá transferir y sincronizar datos sin interrumpir tu flujo actual. Podemos conversar tus necesidades específicas para integrarlo de forma segura.
-                        </dd>
-                    </details>
-                     <details class="faq-item bg-gray-50 p-4 rounded-lg group">
-                        <summary class="list-none">
-                          <dt class="flex justify-between items-center cursor-pointer font-semibold text-gray-800">
-                           ¿Está segura la información de mi mascota?
-                            <span class="chevron text-indigo-500 transform transition-transform duration-200">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </span>
-                          </dt>
-                        </summary>
-                        <dd class="mt-2 text-gray-600">
-                           Sí. Toda la información se almacena de forma encriptada y solo acceden los usuarios autorizados. La privacidad y seguridad de los datos es nuestra máxima prioridad.
+                            Actualmente estamos en versión beta. Dejanos tu contacto en nuestra waitlist y te avisaremos tan pronto puedas registrarte.
                         </dd>
                     </details>
                 </div>
@@ -233,51 +168,12 @@
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <p class="mb-2">¿Tenés más preguntas?</p>
-                <a href="mailto:thor@petsync.net" class="font-semibold text-indigo-400 hover:text-indigo-300 transition-colors">thor@petsync.net</a>
-                <p class="mt-4 text-sm text-gray-400">&copy; 2024 PetSync. Todos los derechos reservados.</p>
-            </div>
+    <footer class="bg-gray-100 border-t border-gray-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-gray-500">
+            <p class="text-sm">© 2025 PetSync. Todos los derechos reservados.</p>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Animation observers
-            const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            animatedElements.forEach(el => observer.observe(el));
-
-            // Form submission
-            const form = document.getElementById('hero-form');
-            const submitBtn = document.getElementById('hero-cta-btn');
-            const loadingSpinner = submitBtn.querySelector('.loading-spinner');
-            const successMsg = document.getElementById('hero-success');
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                loadingSpinner.style.display = 'inline-block';
-                submitBtn.disabled = true;
-
-                // Simulate API call
-                setTimeout(() => {
-                    loadingSpinner.style.display = 'none';
-                    submitBtn.disabled = false;
-                    form.style.display = 'none';
-                    successMsg.style.display = 'block';
-                    setTimeout(() => successMsg.classList.add('show'), 10);
-                }, 1500);
-            });
-        });
-    </script>
 </body>
 </html>
+
