@@ -1,350 +1,472 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PetSync - Turnos e Historial. Una patita a la vez.</title>
-  <style>
-    /* --- Estilos Generales --- */
-    :root{
-      --blue:#007bff;
-      --blue-dark:#0056b3;
-      --bg:#f8f9fa;
-      --text:#333;
-      --muted:#6c757d;
-      --card:#fff;
-      --border:#e9ecef;
-    }
-    *{box-sizing:border-box}
-    body{
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      margin:0;background:var(--bg);color:var(--text);line-height:1.6;
-    }
-    .container{max-width:900px;margin:0 auto;padding:0 20px}
-    h1,h2,h3{color:#212529;margin:0 0 12px}
-    p{margin:0 0 12px}
-    .section{padding:60px 0}
-    .card{
-      background:var(--card);border:1px solid var(--border);border-radius:12px;
-      box-shadow:0 4px 12px rgba(0,0,0,.05);padding:24px;
-    }
-    .badge{display:inline-block;font-weight:600;font-size:12px;padding:6px 10px;border-radius:20px}
-    .muted{color:var(--muted)}
-    .center{text-align:center}
-    .grid{display:grid;gap:20px}
-    @media(min-width:768px){.grid-2{grid-template-columns:1fr 1fr}.grid-3{grid-template-columns:repeat(3,1fr)}}
+<!doctype html>
+<html lang="es" class="h-full scroll-smooth">  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PetSync - Turnos e Historial. Una patita a la vez.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .pulse-gentle {
+            animation: pulseGentle 3s infinite;
+        }
+        
+        @keyframes pulseGentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .bounce-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .bounce-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  _       }
+        
+        .tilt-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .tilt-hover:hover {
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+        }
+        
+        .paw-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.03) 2px, transparent 2px),
+                radial-gradient(circle at 80% 20%, rgba(37, 99, 235, 0.03) 2px, transparent 2px),
+                radial-gradient(circle at 40% 40%, rgba(37, 99, 235, 0.03) 2px, transparent 2px);
+            background-size: 100px 100px, 120px 120px, 80px 80px;
+        }
+        
+        .gradient-hero {
+            background: #f9fafb;
+        }
+        
+        .phone-mockup {
+            background: #ffffff;
+            border: 6px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-screen {
+    _       background: #2563eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .success-message {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .loading-spinner {
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #2563eb;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-4">
+     <div class="flex items-center">
+      <a href="#" class="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
+       <span class="text-2xl font-bold" id="company-logo"> 🐾 <span id="company-name" class="text-blue-600">PetSync</span> </span>
+      </a>
+     </div>
+          <div class="flex items-center space-x-4 sm:space-x-6">
+      <a href="#vet-section" id="vet-nav-link" class="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md px-2 py-1">
+       Para Veterinarias
+      </a>
+      <button id="header-cta" class="bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"> 
+       Contáctanos 
+      </button>
+     </div>
+    </div>
+   </div>
+  </header>
 
-    /* --- Encabezado --- */
-    header{padding:16px 0;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
-    header .wrap{display:flex;justify-content:space-between;align-items:center}
-    .logo{font-size:24px;font-weight:700;color:var(--blue);text-decoration:none}
-    .btn-link{
-      font-weight:600;color:var(--blue);text-decoration:none;padding:8px 16px;border:2px solid var(--blue);
-      border-radius:20px;transition:.2s;font-size:14px
-    }
-    .btn-link:hover{background:var(--blue);color:#fff}
+    <section class="gradient-hero paw-pattern py-20 lg:py-32">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+     <div class="text-center lg:text-left">
+      <h1 id="hero-title" class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 fade-in leading-tight">PetSync — Turnos e Historial. Una patita a la vez.</h1>
+      <p id="hero-subtitle" class="text-xl text-gray-600 mb-8 fade-in leading-relaxed">Organizá toda la información de tu mascota en un solo lugar. Recordatorios automáticos, historial médico y agenda inteligente.</p>
+      <div class="fade-in">
+       <form id="hero-form" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto lg:mx-0">
+                <label for="hero-email" class="sr-only">Tu correo electrónico</label>
+        <input type="email" id="hero-email" placeholder="tu@email.com" class="flex-1 px-6 py-4 border border-gray-200 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" required> 
+        <button type="submit" id="hero-cta-btn" class="bg-blue-600 text-white px-8 py-4 rounded-full hover:bg-blue-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl pulse-gentle focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"> 
+         Unirme a la espera 
+        </button>
+       </form>
+       <div id="hero-success" class="success-message" style="display: none;">
+        ¡Gracias! Te avisaremos cuando esté listo 🐾
+       </div>
+      </div>
+     </div>
+     <div class="text-center fade-in">
+            <div class="phone-mockup w-80 h-96 mx-auto tilt-hover floating" aria-hidden="true">
+       <div class="app-screen w-full h-full p-6 text-white">
+        <div class="text-center mb-6">
+         <div class="w-16 h-16 bg-white/20 rounded-full mx-auto mb-4 flex items-center justify-center"><span class="text-2xl">🐕</span>
+         </div>
+         <h3 class="font-semibold text-lg">Max</h3>
+         <p class="text-blue-100 text-sm">Golden Retriever • 3 años</p>
+        </div>
+        <div class="space-y-3">
+         <div class="bg-white/10 rounded-lg p-3">
+          <div class="flex items-center justify-between"><span class="text-sm">Próxima vacuna</span> <span class="text-xs bg-white/20 px-2 py-1 rounded">15 días</span>
+          </div>
+         </div>
+         <div class="bg-white/10 rounded-lg p-3">
+          <div class="flex items-center justify-between"><span class="text-sm">Control veterinario</span> <span class="text-xs bg-white/20 px-2 py-1 rounded">Mañana</span>
+          </div>
+         </div>
+         <div class="bg-white/10 rounded-lg p-3">
+          <div class="flex items-center justify-between"><span class="text-sm">Medicación</span> <span class="text-xs bg-green-400 px-2 py-1 rounded text-green-900">Hoy</span>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
-    /* --- Hero --- */
-    .hero{background:#fff;padding:80px 0 40px}
-    .hero h1{font-size:42px;line-height:1.25;margin-bottom:14px}
-    .hero p{font-size:18px;color:var(--muted);max-width:560px;margin:0 auto 24px}
-    .waitlist-form{display:flex;justify-content:center;align-items:center;gap:10px;max-width:520px;margin:16px auto 0}
-    .waitlist-form input,.waitlist-form select{
-      flex:1;padding:14px 16px;font-size:16px;border:1px solid #ced4da;border-radius:8px;background:#fff
-    }
-    .btn{
-      padding:14px 18px;font-size:16px;font-weight:700;color:#fff;background:var(--blue);border:none;border-radius:8px;cursor:pointer;transition:.2s
-    }
-    .btn:hover{background:var(--blue-dark)}
+    <section class="bg-white py-20">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+     <h2 id="features-title" class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 fade-in">Todo lo que necesitás para cuidar a tu mascota</h2>
+     <p class="text-xl text-gray-600 fade-in">Una app pensada para tutores que quieren lo mejor para sus compañeros peludos</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+     <div class="text-center p-8 rounded-xl bg-white border border-gray-100 bounce-hover fade-in">
+      <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-3xl shadow-lg" aria-hidden="true">
+       🩺
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Historial Médico Completo</h3>
+      <p class="text-gray-600">Guardá todas las consultas, vacunas, tratamientos y estudios de tu mascota en un lugar seguro y siempre accesible. Historial completo con fotos, documentos y notas del veterinario.</p>
+     </div>
+     <div class="text-center p-8 rounded-xl bg-white border border-gray-100 bounce-hover fade-in">
+      <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-3xl shadow-lg" aria-hidden="true">
+       📅
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Agenda Inteligente</h3>
+      <p class="text-gray-600">Organizá turnos, vacunas y controles con una agenda que se adapta a tu rutina. La app te sugiere las mejores fechas y te ayuda a planificar el cuidado preventivo de tu mascota.</p>
+     </div>
+     <div class="text-center p-8 rounded-xl bg-white border border-gray-100 bounce-hover fade-in">
+      <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-3xl shadow-lg" aria-hidden="true">
+       🔔
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">Recordatorios Inteligentes</h3>
+      <p class="text-gray-600">Nunca más olvides una vacuna, medicación o control. Recibí notificaciones personalizadas según la edad, raza y necesidades específicas de tu mascota.</p>
+     </div>
+    </div>
+   </div>
+  </section>
 
-    /* --- Features simples (visión general) --- */
-    .features h2{font-size:28px;text-align:center;margin-bottom:24px}
-    .feature-item{text-align:center}
-    .feature-icon{font-size:40px;margin-bottom:10px}
-    .feature-item h3{font-size:18px;margin-bottom:6px}
+    <section class="bg-gray-50 py-20">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+     <div class="slide-in-left">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Para Tutores de Mascotas</h2>
+      <p class="text-xl text-gray-600 mb-8">PetSync está diseñado pensando en vos y en las necesidades de tu mascota. Una app completa que centraliza toda la información médica y te ayuda a mantener el cuidado preventivo al día.</p>
+      <div class="space-y-6">
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-sm font-bold">✓</span>
+        </div>
+        <div>
+         <h3 class="font-semibold text-gray-900 mb-2">Historial médico completo y seguro</h3>
+         <p class="text-gray-600">Guardá todas las consultas, vacunas, tratamientos, estudios y medicaciones de tu mascota. Incluye fotos, documentos PDF y notas detalladas del veterinario, todo sincronizado en la nube.</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-sm font-bold">✓</span>
+        </div>
+        <div>
+         <h3 class="font-semibold text-gray-900 mb-2">Agenda inteligente con recordatorios personalizados</h3>
+         <p class="text-gray-600">Organizá turnos, vacunas y controles con una agenda que se adapta a la edad, raza y necesidades específicas de tu mascota. Recordatorios automáticos que nunca fallan.</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-sm font-bold">✓</span>
+        </div>
+        <div>
+         <h3 class="font-semibold text-gray-900 mb-2">Múltiples mascotas en un solo lugar</h3>
+         <p class="text-gray-600">Gestioná todos tus compañeros peludos desde una sola app. Cada mascota tiene su perfil individual con información médica, fotos y calendario personalizado.</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-sm font-bold">✓</span>
+        </div>
+        <div>
+         <h3 class="font-semibold text-gray-900 mb-2">Acceso offline y sincronización automática</h3>
+         <p class="text-gray-600">Consultá la información de tu mascota aunque no tengas internet. Cuando te reconectes, todo se sincroniza automáticamente y de forma segura.</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="text-center slide-in-right">
+      <div class="bg-blue-50 rounded-2xl p-8 inline-block max-w-sm">
+       <div class="text-6xl mb-4" aria-hidden="true">
+        🚀
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-4">¡Estamos en versión beta!</h3>
+       <p class="text-gray-600">Sumate a la waitlist para ser de los primeros en probar PetSync y ayudarnos a construir la mejor herramienta para el cuidado de nuestras mascotas.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
-    /* --- Bloques especiales --- */
-    .split{align-items:center}
-    .mockup{border:1px dashed var(--border);border-radius:12px;background:#fff;padding:16px}
-    .mockup .bar{height:12px;background:#f1f3f5;border-radius:8px;margin-bottom:12px}
-    .mockup .row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px}
-    .tag{font-size:12px;padding:4px 8px;border-radius:6px;background:#eef5ff;color:#2251cf}
+      <section id="vet-section" class="bg-white py-20">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+     <div class="inline-flex items-center bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium mb-6 fade-in">
+      🚀 Próximamente
+     </div>
+     <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 fade-in">Conectado con Veterinarias</h2>
+     <p class="text-xl text-gray-600 max-w-3xl mx-auto fade-in">La próxima fase de PetSync conectará clínicas veterinarias y tutores en un ecosistema completo. Historiales sincronizados, turnos en tiempo real, comunicación fluida y gestión integral de la salud animal.</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+     <div class="text-center slide-in-left">
+      <div class="bg-gray-50 rounded-2xl p-8 inline-block max-w-sm">
+       <div class="text-6xl mb-4" aria-hidden="true">
+        🐾
+       </div>
+       <h3 class="text-xl font-bold text-gray-900 mb-4">Quiénes Somos</h3>
+       <p class="text-gray-600">En PetSync, desarrollamos una plataforma móvil pensada para tutores y clínicas veterinarias, convencidos de que el cuidado de las mascotas puede ser más simple y eficiente para todos.</p>
+       <p class="text-sm text-blue-600 font-medium mt-4 italic">"Conectamos ambos lados del mostrador, una patita a la vez."</p>
+      </div>
+     </div>
+     <div class="slide-in-right">
+      <h3 class="text-2xl font-bold text-gray-900 mb-6">Un ecosistema completo de salud animal</h3>
+      <div class="space-y-4">
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-xs">✓</span>
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Sincronización automática de historiales</h4>
+         <p class="text-gray-600 text-sm">Cada consulta, vacuna o tratamiento se actualiza automáticamente en ambas plataformas</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-xs">✓</span>
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Agenda compartida inteligente</h4>
+         <p class="text-gray-600 text-sm">Turnos coordinados entre clínica y tutor con recordatorios automáticos para ambos</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-xs">✓</span>
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Comunicación directa y segura</h4>
+         <p class="text-gray-600 text-sm">Chat integrado para consultas rápidas, seguimiento post-consulta y emergencias</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-xs">✓</span>
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Panel profesional completo</h4>
+         <p class="text-gray-600 text-sm">Gestión de pacientes, estadísticas de la clínica y herramientas de diagnóstico</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0" aria-hidden="true"><span class="text-white text-xs">✓</span>
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Recordatorios coordinados</h4>
+         <p class="text-gray-600 text-sm">Sistema inteligente que coordina vacunas, controles y tratamientos entre todas las partes</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
-    /* --- Listas con checks --- */
-    .check{display:flex;gap:10px;align-items:flex-start}
-    .check .dot{width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;margin-top:2px}
+    <section class="bg-gray-50 py-20">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-16 fade-in">¿Cómo funciona?</h2>
+    <div class="grid lg:grid-cols-2 gap-16">
+          <div class="slide-in-left">
+      <div class="text-center mb-8">
+       <div class="w-16 h-16 bg-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center" aria-hidden="true"><span class="text-white text-2xl">🐾</span>
+       </div>
+       <h3 class="text-2xl font-bold text-gray-900">Para Tutores</h3>
+       <p class="text-gray-600">Fase actual</p>
+      </div>
+      <div class="space-y-6">
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         1
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Descargá PetSync</h4>
+         <p class="text-gray-600 text-sm">Disponible pronto en App Store y Google Play</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         2
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Creá el perfil de tu mascota</h4>
+         <p class="text-gray-600 text-sm">Información básica, fotos y datos médicos</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         3
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Organizá y planificá</h4>
+         <p class="text-gray-600 text-sm">Turnos, vacunas, medicaciones y recordatorios</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         4
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Disfrutá la tranquilidad</h4>
+         <p class="text-gray-600 text-sm">Todo bajo control, una patita a la vez</p>
+        </div>
+       </div>
+      </div>
+     </div>
+          <div class="slide-in-right">
+      <div class="text-center mb-8">
+       <div class="w-16 h-16 bg-green-600 rounded-full mx-auto mb-4 flex items-center justify-center" aria-hidden="true"><span class="text-white text-2xl">🏥</span>
+       </div>
+       <h3 class="text-2xl font-bold text-gray-900">Para Veterinarias</h3>
+       <p class="text-gray-600">Próxima fase</p>
+      </div>
+      <div class="space-y-6 opacity-60">
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         1
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Registrá tu clínica</h4>
+         <p class="text-gray-600 text-sm">Panel web para profesionales</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         2
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Conectá con tutores</h4>
+         <p class="text-gray-600 text-sm">Invitaciones y sincronización automática</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         3
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Gestioná en tiempo real</h4>
+         <p class="text-gray-600 text-sm">Turnos, historiales y comunicación</p>
+        </div>
+       </div>
+       <div class="flex items-start">
+        <div class="w-8 h-8 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0" aria-hidden="true">
+         4
+        </div>
+        <div>
+         <h4 class="font-semibold text-gray-900 mb-1">Optimizá tu práctica</h4>
+         <p class="text-gray-600 text-sm">Menos administración, más cuidado</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
 
-    /* --- FAQ --- */
-    .faq-item{border:1px solid var(--border);border-radius:12px;background:#fff;padding:18px}
-
-    /* --- Footer --- */
-    footer{padding:40px 0;margin-top:20px;border-top:1px solid var(--border);color:#777;font-size:14px}
-    .links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-    .links a{color:#666;text-decoration:none}
-    .links a:hover{text-decoration:underline}
-
-    /* util */
-    .sp-8{height:8px}.sp-12{height:12px}.sp-16{height:16px}.sp-24{height:24px}
-  </style>
-</head>
-<body>
-
-  <!-- Header -->
-  <header>
-    <div class="container wrap">
-      <a href="#" class="logo">🐾 PetSync</a>
-      <a href="#waitlist-2" class="btn-link">Soy Veterinario</a>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container center">
-      <div class="badge" style="background:#eef5ff;color:#2251cf">Beta</div>
-      <div class="sp-12"></div>
-      <h1>🐾 PetSync: El cuidado de tu mascota, simple y conectado.</h1>
-      <p>Conectamos tutores y veterinarias para una gestión de salud integral. Agendá turnos, accedé a historiales médicos y más, todo en un solo lugar.</p>
-
-      <!-- Waitlist principal -->
-      <form class="waitlist-form" action="TU_URL_DE_FORMULARIO_AQUI" method="POST">
-        <input type="email" name="email" placeholder="Tu correo electrónico" required>
-        <button class="btn" type="submit">Sumate a la Waitlist</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- Card “Historial de Rocky” -->
-  <section class="section">
-    <div class="container grid grid-2 split">
-      <div>
-        <h2>Vista rápida del historial</h2>
-        <p class="muted">Ejemplo de cómo verías la información de tu mascota en PetSync.</p>
-        <div class="sp-16"></div>
-        <div class="card">
-          <strong>Historial de “Rocky”</strong>
-          <div class="sp-12"></div>
-          <div class="grid" style="gap:10px">
-            <div class="row" style="display:flex;justify-content:space-between;align-items:center">
-              <span>Última visita</span><span class="tag">Control Anual · 15/05/2025</span>
-            </div>
-            <div class="row" style="display:flex;justify-content:space-between;align-items:center">
-              <span>Próxima vacuna</span><span class="tag">Antirrábica · Recordatorio 01/07</span>
-            </div>
-            <div class="row" style="display:flex;justify-content:space-between;align-items:center">
-              <span>Diagnóstico reciente</span><span class="tag">Alergia leve · Dieta especial</span>
-            </div>
-          </div>
-          <div class="sp-12"></div>
-          <a href="#features-tutores" class="btn-link" style="border-radius:8px">Ver historial completo</a>
-        </div>
-      </div>
-
-      <!-- Mockup simple -->
-      <div class="mockup">
-        <div class="bar"></div>
-        <div class="row"><span>Perfil: Rocky</span><span class="tag">3 años</span></div>
-        <div class="row"><span>Vacunas</span><span class="tag">Al día</span></div>
-        <div class="row"><span>Próximo turno</span><span class="tag">12/07 · 10:30</span></div>
-        <div class="row"><span>Notas</span><span class="tag">Alergia estacional</span></div>
-        <p class="muted" style="margin-top:8px">Mockup ilustrativo de la app</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Beneficios para Tutores -->
-  <section id="features-tutores" class="section" style="background:#fff">
-    <div class="container">
-      <h2 class="center">Beneficios para Tutores</h2>
-      <p class="center muted">Todo lo que necesitás para el cuidado de tu mascota, conectado con tu veterinaria.</p>
-      <div class="sp-16"></div>
-      <div class="grid grid-3">
-        <div class="card feature-item">
-          <div class="feature-icon">📁</div>
-          <h3>Tu Mascota, Siempre Contigo</h3>
-          <p>Accedé y gestioná el historial médico completo desde cualquier lugar. Escaneá recetas y documentos para centralizar todo.</p>
-        </div>
-        <div class="card feature-item">
-          <div class="feature-icon">🤖</div>
-          <h3>IA a tu Servicio (Próx.)</h3>
-          <p>Consultá “¿Cuándo fue la última vacuna de Thor?” o “¿Qué medicación usamos para su otitis?”. Respuestas rápidas, sin buscar papeles.</p>
-        </div>
-        <div class="card feature-item">
-          <div class="feature-icon">📅</div>
-          <h3>Agenda Inteligente</h3>
-          <p>Organizá turnos, vacunas y desparasitaciones. Recibí recordatorios inteligentes para no olvidarte de nada.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Beneficios para Veterinarias -->
-  <section class="section">
-    <div class="container">
-      <h2 class="center">Beneficios para Veterinarias</h2>
-      <p class="center muted">Optimizá la gestión, fortalecé la relación con pacientes y ampliá tu alcance.</p>
-      <div class="sp-16"></div>
-      <div class="grid grid-3">
-        <div class="card feature-item">
-          <div class="feature-icon">⏱️</div>
-          <h3>Optimizá tu Tiempo</h3>
-          <p>Agenda más ordenada y menos tareas administrativas para enfocarte en el cuidado.</p>
-        </div>
-        <div class="card feature-item">
-          <div class="feature-icon">💬</div>
-          <h3>Conexión Directa</h3>
-          <p>Comunicación fluida y proactiva con tutores. Información centralizada para atender mejor.</p>
-        </div>
-        <div class="card feature-item">
-          <div class="feature-icon">🌐</div>
-          <h3>Comunidad y Servicios</h3>
-          <p>Sumate a una red de tutores y profesionales. Difundí campañas, servicios y novedades.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Cómo Funciona -->
-  <section class="section" style="background:#fff">
-    <div class="container">
-      <h2 class="center">¿Cómo Funciona PetSync?</h2>
-      <div class="sp-16"></div>
-
-      <div class="grid grid-2 split">
-        <div class="card">
-          <div class="badge" style="background:#e6f9ee;color:#0a8f4a;margin-bottom:10px">Para Tutores</div>
-          <div class="check"><span class="dot">1</span><div><strong>Descargá PetSync</strong><br><span class="muted">Pronto en App Store y Google Play.</span></div></div>
-          <div class="check"><span class="dot">2</span><div><strong>Creá el perfil de tu mascota</strong><br><span class="muted">Datos básicos, fotos y antecedentes.</span></div></div>
-          <div class="check"><span class="dot">3</span><div><strong>Conectate con tu veterinaria</strong><br><span class="muted">Compartí historial y turnos en 1 paso.</span></div></div>
-          <div class="check"><span class="dot">4</span><div><strong>Gestioná y recibí recordatorios</strong><br><span class="muted">Todo organizado, sin estrés.</span></div></div>
-        </div>
-
-        <div class="card">
-          <div class="badge" style="background:#fff3cd;color:#9a6700;margin-bottom:10px">Para Veterinarias</div>
-          <div class="check"><span class="dot">1</span><div><strong>Registrá tu clínica</strong><br><span class="muted">Panel web simple y seguro.</span></div></div>
-          <div class="check"><span class="dot">2</span><div><strong>Creá tu perfil profesional</strong><br><span class="muted">Servicios, horarios y equipo.</span></div></div>
-          <div class="check"><span class="dot">3</span><div><strong>Invitá a tus pacientes</strong><br><span class="muted">Vinculación rápida con tutores.</span></div></div>
-          <div class="check"><span class="dot">4</span><div><strong>Gestioná turnos y comunicaciones</strong><br><span class="muted">Agenda, avisos y seguimiento.</span></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Quiénes Somos -->
-  <section class="section">
-    <div class="container grid grid-2 split">
-      <div>
-        <h2>Quiénes Somos</h2>
-        <p><strong>🐾 PetSync</strong> es una plataforma móvil para tutores y clínicas veterinarias. Organizamos turnos, centralizamos historiales y facilitamos acceso a productos esenciales, todo desde tu celular.</p>
-        <p class="muted" style="font-style:italic;margin-top:6px">“Conectamos ambos lados del mostrador, una patita a la vez.”</p>
-        <p style="margin-top:6px"><strong>Tu mascota, sus cosas, todo en orden.</strong> Para vos y para la veterinaria.</p>
-      </div>
-      <div class="card">
-        <div class="badge" style="background:#eef5ff;color:#2251cf">Beta</div>
-        <h3 style="margin-top:10px">¡Estamos en versión beta!</h3>
-        <p class="muted">Sumate a la waitlist para ser de los primeros en probar PetSync y ayudarnos a construir la mejor herramienta para el cuidado.</p>
-        <div class="sp-12"></div>
-        <form id="waitlist-2" class="grid" style="grid-template-columns:1fr;gap:10px" action="TU_URL_DE_FORMULARIO_AQUI" method="POST">
-          <input type="email" name="email" placeholder="tu@correo.com" required style="padding:12px 14px;border:1px solid #ced4da;border-radius:8px">
-          <select name="perfil" required style="padding:12px 14px;border:1px solid #ced4da;border-radius:8px;background:#fff">
-            <option value="">Soy un...</option>
-            <option value="tutor">Tutor de Mascota</option>
-            <option value="veterinario">Veterinario/a</option>
-            <option value="clinica">Clínica Veterinaria</option>
-          </select>
-          <button class="btn" type="submit">Unirme a la lista</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section" style="background:#fff">
-    <div class="container">
-      <h2 class="center">Preguntas Frecuentes</h2>
-      <div class="sp-16"></div>
-      <div class="grid">
-        <div class="faq-item">
-          <h3>¿Qué es PetSync y cómo puede ayudarme?</h3>
-          <p>PetSync conecta a tutores con clínicas veterinarias. Agendás turnos, accedés a historiales centralizados, recibís recordatorios y más, todo desde el celular. Para clínicas, optimiza agenda, reduce administración y mejora la comunicación.</p>
-        </div>
-        <div class="faq-item">
-          <h3>¿Cómo me registro en PetSync?</h3>
-          <p>Estamos en beta. Dejá tu contacto en la waitlist de esta página y te avisamos cuando puedas registrarte.</p>
-        </div>
-        <div class="faq-item">
-          <h3>¿PetSync tiene costo para tutores?</h3>
-          <p>Apuntamos a que la versión básica para tutores sea gratuita, con funciones premium opcionales más adelante.</p>
-        </div>
-        <div class="faq-item">
-          <h3>¿Para quiénes está pensado?</h3>
-          <p>Para tutores que quieren organizar mejor el cuidado y para veterinarios/ clínicas que buscan mejorar la comunicación y la gestión.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Soy veterinario independiente, ¿me sirve?</h3>
-          <p>Sí. PetSync funciona para profesionales independientes y clínicas de todos los tamaños: agenda, historiales y comunicación en un solo lugar.</p>
-        </div>
-        <div class="faq-item">
-          <h3>Soy una clínica grande, ¿cómo se integra PetSync con lo que ya tengo?</h3>
-          <p>Somos <strong>agnósticos e interoperables</strong>. Priorizamos estándares y portabilidad: podemos <strong>importar/exportar</strong> información y <strong>transferir</strong> datos de manera segura para convivir con tu software actual. Contactanos para tu caso específico.</p>
-        </div>
-        <div class="faq-item">
-          <h3>¿Está segura la información?</h3>
-          <p>La seguridad es prioridad. Usamos cifrado y buenas prácticas. Solo vos y quienes autorices (por ejemplo, tu veterinario) pueden acceder a los datos.</p>
-        </div>
-        <div class="faq-item">
-          <h3>¿Cómo contacto a PetSync?</h3>
-          <p>Escribinos a <a href="mailto:thor@petsync.net">thor@petsync.net</a> o seguinos en redes (próximamente) para novedades y soporte.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features breve (resumen) -->
-  <section class="section">
-    <div class="container features">
-      <h2>La visión completa de PetSync</h2>
-      <div class="features-grid grid grid-3">
-        <div class="feature-item card">
-          <div class="feature-icon">🩺</div>
-          <h3>Historial Centralizado</h3>
-          <p>Armalo escaneando (OCR) o recibilo directo desde tu veterinaria asociada.</p>
-        </div>
-        <div class="feature-item card">
-          <div class="feature-icon">📅</div>
-          <h3>Turnos Online</h3>
-          <p>Reservá y gestioná turnos con clínicas de la red, sin llamadas.</p>
-        </div>
-        <div class="feature-item card">
-          <div class="feature-icon">🔔</div>
-          <h3>Recordatorios en la App</h3>
-          <p>Notificaciones sobre citas, medicación y próximos vencimientos.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container center">
-      <strong>PetSync</strong><br/>
-      <span class="muted">Tu mascota, sus cosas, todo en orden.</span>
-      <div class="sp-16"></div>
-      <div class="links">
-        <a href="#">Términos y condiciones</a>
-        <a href="#">Política de Privacidad</a>
-        <a href="mailto:contacto@petsync.com">contacto@petsync.com</a>
-      </div>
-      <div class="sp-12"></div>
-      <div class="links">
-        <a href="#" aria-label="Facebook">FB</a>
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="Twitter / X">TW</a>
-        <a href="#" aria-label="LinkedIn">IN</a>
-      </div>
-      <div class="sp-12"></div>
-      <div class="muted">© 2025 PetSync. Todos los derechos reservados.</div>
-    </div>
-  </footer>
-
-</body>
-</html>
+      <section class="bg-white py-20">
+   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-16 fade-in">Preguntas Frecuentes</h2>
+    <dl class="space-y-6">
